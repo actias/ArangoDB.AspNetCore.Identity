@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F54DD536-0424-4C1A-B750-7A9548DDC942}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D10661E6-1620-4E05-849B-17A06057B161}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ArangoDB.AspNetCore.Identity", "src\ArangoDB.AspNetCore.Identity\ArangoDB.AspNetCore.Identity.xproj", "{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{77E211FC-CAA4-4DA5-98F1-D39AE20CD5CE} = {F54DD536-0424-4C1A-B750-7A9548DDC942}
+	EndGlobalSection
+EndGlobal
