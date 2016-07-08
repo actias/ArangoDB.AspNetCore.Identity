@@ -1,7 +1,7 @@
 ArangoDB.AspNetCore.Identity
 =======================
 
-ASP.NET Identity provider that uses ArangoDB for storage
+ASP.NET Core Identity provider that uses ArangoDB for storage
 
 ## Purpose ##
 
