@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using ArangoDB.Client;
 
@@ -52,27 +51,6 @@ namespace ArangoDB.AspNetCore.Identity
         /// <summary>
         /// Collection of claims in the role
         /// </summary>
-        public List<IdentityClaim> Claims { get; } = new List<IdentityClaim>();
-
-        public virtual void AddClaim(Claim claim)
-        {
-            Claims.Add(new IdentityClaim(claim));
-        }
-
-        public virtual void RemoveClaim(Claim claim)
-        {
-            Claims.RemoveAll(c => c.ClaimType == claim.Type &&
-                                  c.ClaimValue == claim.Value);
-        }
-
-        public virtual void ReplaceClaim(Claim claim, Claim newClaim)
-        {
-            foreach (var userClaim in Claims.Where(userClaim => userClaim.ClaimType == claim.Type &&
-                                                                userClaim.ClaimValue == claim.Value))
-            {
-                userClaim.ClaimType = newClaim.Type;
-                userClaim.ClaimValue = newClaim.Value;
-            }
-        }
+        public List<Claim> Claims { get; } = new List<Claim>();
     }
 }

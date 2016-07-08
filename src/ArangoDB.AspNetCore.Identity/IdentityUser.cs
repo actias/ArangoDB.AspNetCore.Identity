@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using ArangoDB.Client;
 
 namespace ArangoDB.AspNetCore.Identity
@@ -92,7 +91,7 @@ namespace ArangoDB.AspNetCore.Identity
         /// <summary>
         /// Navigation property for users in the role
         /// </summary>
-        public virtual List<IdentityRole> Roles { get; set; } = new List<IdentityRole>();
+        public virtual List<string> Roles { get; set; } = new List<string>();
 
         /// <summary>
         /// Navigation property for users claims
@@ -102,31 +101,6 @@ namespace ArangoDB.AspNetCore.Identity
         /// <summary>
         /// Navigation property for users logins
         /// </summary>
-        public virtual List<IdentityUserLogin> Logins { get; set; } = new List<IdentityUserLogin>();
-
-        public virtual void AddClaim(Claim claim)
-        {
-            Claims.Add(new IdentityClaim(claim));
-        }
-
-        public virtual void RemoveClaim(Claim claim)
-        {
-            Claims.RemoveAll(c =>
-                c.ClaimType == claim.Type &&
-                c.ClaimValue == claim.Value);
-        }
-
-        public virtual void ReplaceClaim(Claim claim, Claim newClaim)
-        {
-            foreach (var userClaim in Claims)
-            {
-                if (userClaim.ClaimType == claim.Type &&
-                    userClaim.ClaimValue == claim.Value)
-                {
-                    userClaim.ClaimType = newClaim.Type;
-                    userClaim.ClaimValue = newClaim.Value;
-                }
-            }
-        }
+        public virtual List<IdentityLogin> Logins { get; set; } = new List<IdentityLogin>();
     }
 }

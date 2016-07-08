@@ -9,27 +9,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ArangoDB.AspNetCore.Identity
 {
-    public class RoleStore<TUser, TRole, TContext> :
+    public class RoleStore<TRole> :
+        Store,
         IQueryableRoleStore<TRole>,
         IRoleClaimStore<TRole>
-        where TUser : IdentityUser
         where TRole : IdentityRole
-        where TContext : ArangoIdentityContext<TUser, TRole>
     {
-        private readonly TContext _context;
-
-        /// <summary>
-        ///     Used to generate public API error messages
-        /// </summary>
-        public IdentityErrorDescriber ErrorDescriber { get; set; }
-
-        public RoleStore(TContext context, IdentityErrorDescriber describer = null)
-        {
-            _context = context;
-            ErrorDescriber = describer ?? new IdentityErrorDescriber();
-        }
-
-        public IQueryable<TRole> Roles => _context.Roles;
+        public IQueryable<TRole> Roles => Database.Query<TRole>();
 
         public void Dispose()
         {
@@ -45,7 +31,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            await _context.Database.Collection<TRole>().InsertAsync(role);
+            await Database.InsertAsync<TRole>(role);
 
             return IdentityResult.Success;
         }
@@ -59,14 +45,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            var entity = await _context.Roles.FirstOrDefaultAsync(x => x.Id == role.Id);
-
-            if (entity == null)
-            {
-                throw new NullReferenceException("No role found. Cannot perform update.");
-            }
-
-            await _context.Database.ReplaceByIdAsync<TRole>(entity.Key, role);
+            await Database.UpdateAsync<TRole>(role);
 
             return IdentityResult.Success;
         }
@@ -80,14 +59,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            var entity = await _context.Roles.FirstOrDefaultAsync(x => x.Id == role.Id);
-
-            if (entity == null)
-            {
-                throw new NullReferenceException("No role found. Cannot perform deletion.");
-            }
-
-            await _context.Database.RemoveByIdAsync<TRole>(entity.Key);
+            await Database.RemoveAsync<TRole>(role);
 
             return IdentityResult.Success;
         }
@@ -104,7 +76,7 @@ namespace ArangoDB.AspNetCore.Identity
             return Task.FromResult(role.Id);
         }
 
-        public Task<string> GetRoleNameAsync(TRole role,CancellationToken cancellationToken = new CancellationToken())
+        public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken = new CancellationToken())
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -116,7 +88,7 @@ namespace ArangoDB.AspNetCore.Identity
             return Task.FromResult(role.Name);
         }
 
-        public async Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken = new CancellationToken())
+        public Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken = new CancellationToken())
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -125,39 +97,34 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            var entity = await _context.Roles.FirstOrDefaultAsync(x => x.Id == role.Id);
+            role.Name = roleName;
 
-            if (entity == null)
-            {
-                throw new NullReferenceException("No role found. Cannot perform update.");
-            }
-
-            entity.Name = roleName;
-
-            await _context.Database.UpdateAsync<TRole>(entity);
+            return Task.FromResult(0);
         }
 
         public virtual async Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken = new CancellationToken())
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return await _context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+            return await Database.Query<TRole>().FirstOrDefaultAsync(x => x.Id == roleId);
         }
 
         public virtual async Task<TRole> FindByNameAsync(string normalizedName, CancellationToken cancellationToken = new CancellationToken())
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return await _context.Roles.FirstOrDefaultAsync(x => x.NormalizedName == normalizedName);
+            return await Database.Query<TRole>().FirstOrDefaultAsync(x => x.NormalizedName == normalizedName);
         }
 
         public virtual Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
+
             if (role == null)
             {
                 throw new ArgumentNullException(nameof(role));
             }
+
             return Task.FromResult(role.NormalizedName);
         }
 
@@ -184,7 +151,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            return Task.FromResult((IList<Claim>)role.Claims.Select(c => c.ToSecurityClaim()).ToList());
+            return Task.FromResult((IList<Claim>)role.Claims.ToList());
         }
 
         public virtual Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new CancellationToken())
@@ -201,7 +168,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(claim));
             }
 
-            role.AddClaim(claim);
+            role.Claims.Add(claim);
 
             return Task.FromResult(0);
         }
@@ -220,7 +187,7 @@ namespace ArangoDB.AspNetCore.Identity
                 throw new ArgumentNullException(nameof(claim));
             }
 
-            role.RemoveClaim(claim);
+            role.Claims.RemoveAll(x => x.Type == claim.Type && x.Value == claim.Value);
 
             return Task.FromResult(0);
         }
