@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/actias/ArangoDB.AspNetCore.Identity</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial production release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>ArangoDB AspNetCore Identity AspNet</tags>
+	<dependencies>
+      <dependency id="Microsoft.AspNetCore.Identity" version="1.0.0" />
+	  <dependency id="ArangoDB.Client" version="0.7.31" />
+    </dependencies>
+  </metadata>
+</package>

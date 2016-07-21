@@ -1,10 +1,11 @@
 ﻿{
-  "authors": [ "Rex Strowbridge" ],
+  "authors": [ "Actias" ],
   "dependencies": {
     "Microsoft.AspNetCore.Identity": "1.0.0",
     "ArangoDB.Client": "0.7.31"
   },
 
+  "title": "ArangoDB.AspNetCore.Identity",
   "description": "ASP.NET Core Identity provider that uses ArangoDB for storage",
 
   "frameworks": {
@@ -12,6 +13,8 @@
   },
 
   "packOptions": {
+    "releaseNotes": "Initial production release",
+    "owners": [ "Actias" ],
     "repository": {
       "type": "git",
       "url": "https://github.com/actias/ArangoDB.AspNetCore.Identity"
@@ -20,5 +23,11 @@
     "tags": [ "ArangoDB", "AspNetCore", "Identity" ]
   },
 
-  "version": "1.0.0-*"
+  "version": "1.0.0-*",
+
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  }
 }
