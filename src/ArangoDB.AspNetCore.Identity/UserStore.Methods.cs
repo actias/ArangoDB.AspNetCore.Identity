@@ -433,7 +433,7 @@ namespace ArangoDB.AspNetCore.Identity
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
-            if (!user.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase))
+            if (!user.Roles.Contains(role, StringComparer.OrdinalIgnoreCase))
                 user.Roles.Add(role);
 
             return Task.FromResult(0);
@@ -470,7 +470,7 @@ namespace ArangoDB.AspNetCore.Identity
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
-            return Task.FromResult(user.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase));
+            return Task.FromResult(user.Roles.Contains(role, StringComparer.OrdinalIgnoreCase));
         }
 
         public async Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
@@ -501,7 +501,7 @@ namespace ArangoDB.AspNetCore.Identity
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
-            user.Roles.RemoveAll(r => string.Equals(r, role, StringComparison.InvariantCultureIgnoreCase));
+            user.Roles.RemoveAll(r => string.Equals(r, role, StringComparison.OrdinalIgnoreCase));
 
             return Task.FromResult(0);
         }
