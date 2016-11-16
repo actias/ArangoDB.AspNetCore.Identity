@@ -2,14 +2,14 @@
   "authors": [ "Actias" ],
   "dependencies": {
     "Microsoft.AspNetCore.Identity": "1.0.0",
-    "ArangoDB.Client": "0.7.31"
+    "ArangoDB.Client": "0.7.50"
   },
 
   "title": "ArangoDB.AspNetCore.Identity",
   "description": "ASP.NET Core Identity provider that uses ArangoDB for storage",
 
   "frameworks": {
-    "net461": {}
+    "netstandard1.3": {}
   },
 
   "packOptions": {
